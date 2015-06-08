@@ -3,7 +3,9 @@
 *.ropeproject
 *.swp
 *.swo
+*.swn
 .DS_Store
 *.egg-info/*
 build/*
 dist/*
+db.sqlite3
