@@ -17,10 +17,20 @@ class MailinglistTestCase(TestCase):
         self.assertEquals(url, exp)
 
     def test_set_list_url(self):
-        mailinglist = MailgunList('list2@example.com')
-        url = mailinglist.get_list_url()
-        exp = 'https://api.mailgun.net/v2/lists/list2@example.com/members'
-        self.assertEquals(url, exp)
+        with patch.dict('os.environ', {}, clear=True):
+            mailinglist = MailgunList('list2@example.com')
+            url = mailinglist.get_list_url()
+            exp = 'https://api.mailgun.net/v2/lists/list2@example.com/members'
+            self.assertEquals(url, exp)
+
+    def test_env_over_explicit_list_url(self):
+        # TODO This is actually something that should not happen.
+        with patch.dict('os.environ', {'MGSUB_DEFAULT_MAILINGLIST':
+                                       'list3@example.com'}, clear=True):
+            mailinglist = MailgunList('list2@example.com')
+            url = mailinglist.get_list_url()
+            exp = 'https://api.mailgun.net/v2/lists/list3@example.com/members'
+            self.assertEquals(url, exp)
 
     def test_api_key(self):
         with patch.dict('os.environ', {}, clear=True):

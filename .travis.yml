@@ -5,4 +5,6 @@ python:
 
 install: "pip install -r requirements.txt -r development.txt"
 
-script: "./manage.py test"
+script:
+  - ./manage.py test --with-xunit --xunit-file=shippable/testresults/nosetests.xml --with-coverage --cover-package=mgsub
+  - coverage xml -i -o shippable/codecoverage/coverage.xml
