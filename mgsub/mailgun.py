@@ -5,6 +5,7 @@ import logging
 import requests
 
 from django.conf import settings
+from django.core.exceptions import ImproperlyConfigured
 
 logger = logging.getLogger('mgsub')
 
@@ -25,12 +26,16 @@ class MailgunList(object):
     list_url = "https://api.mailgun.net/v2/lists/{0}/members"
 
     def __init__(self, list_email=None):
-        if list_email is None:
+        if list_email:
+            self.list_email = list_email
+        elif (hasattr(settings, 'MGSUB_DEFAULT_MAILINGLIST') and
+              settings.MGSUB_DEFAULT_MAILINGLIST is not None):
             self.list_email = settings.MGSUB_DEFAULT_MAILINGLIST
         elif 'MGSUB_DEFAULT_MAILINGLIST' in os.environ:
             self.list_email = os.environ.get('MGSUB_DEFAULT_MAILINGLIST')
         else:
-            self.list_email = list_email
+            raise ImproperlyConfigured('MGSUB_DEFAULT_MAILINGLIST not set or ' +
+                                       'passed directly to MailgunList')
 
         if hasattr(settings, 'MAILGUN_API_KEY'):
             self.api_key = settings.MAILGUN_API_KEY
