@@ -14,7 +14,7 @@ def get_requirements(filename):
     install_reqs = parse_requirements(filename, session=PipSession())
     return [str(ir.req) for ir in install_reqs]
 
-with os.path.join(os.path.dirname(__file__), 'README.rst') as readme:
+with open(os.path.join(os.path.dirname(__file__), 'README.rst')) as readme:
     README = readme.read()
 
 setup(name='django-mgsub',
@@ -27,4 +27,17 @@ setup(name='django-mgsub',
       install_requires=get_requirements('requirements.txt'),
       tests_require=get_requirements('development.txt'),
       packages=['mgsub'],
+      url='https://github.com/codetry/mgsub/',
+      license='MIT License',
+      classifiers=[
+          'Environment :: Web Environment',
+          'Framework :: Django',
+          'Framework :: Django :: 1.8',
+          'Intended Audience :: Developers',
+          'Operating System :: OS Independent',
+          'Programming Language :: Python',
+          'License :: OSI Approved :: MIT License',
+          'Topic :: Internet :: WWW/HTTP',
+          'Topic :: Internet :: WWW/HTTP :: Dynamic Content',
+      ],
       )
