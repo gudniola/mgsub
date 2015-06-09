@@ -27,6 +27,8 @@ class MailgunList(object):
     def __init__(self, list_email=None):
         if list_email is None:
             self.list_email = settings.MGSUB_DEFAULT_MAILINGLIST
+        elif 'MGSUB_DEFAULT_MAILINGLIST' in os.environ:
+            self.list_email = os.environ.get('MGSUB_DEFAULT_MAILINGLIST')
         else:
             self.list_email = list_email
 
