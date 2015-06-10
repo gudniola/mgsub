@@ -52,6 +52,8 @@ class SignupForm(forms.Form):
         from_address = getattr(settings, 'MGSUB_WELCOME_FROM',
                                settings.SERVER_EMAIL)
         reply_to = getattr(settings, 'MGSUB_WELCOME_REPLY_TO', None)
+        if type(reply_to) not in [None, list, tuple]:
+            reply_to = [reply_to]
         welcome_template = getattr(settings, 'MGSUB_WELCOME_TEMPLATE',
                                    'mgsub/welcome.html')
         welcome_plain = getattr(settings, 'MGSUB_WELCOME_TEMPLATE_PLAIN',
